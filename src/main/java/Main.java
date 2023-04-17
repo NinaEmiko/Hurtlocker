@@ -19,6 +19,7 @@ public class Main {
         ArrayList<String> breadPrices = getPrices(parsedData, "bread");
         ArrayList<String> milkPrices = getPrices(parsedData, "milk");
         ArrayList<String> cookiesPrices = getPrices(parsedData, "cookies");
+        System.out.println(applePrices);
     }
 
     public static ArrayList<String> getPrices(ArrayList<HashMap<String, String>> list, String key){
@@ -74,7 +75,7 @@ public class Main {
                 .filter(entry -> entry.getKey().equalsIgnoreCase(key))
                 .findFirst()
                 .map(Map.Entry::getValue)
-                .orElse(null);
+                .orElse("");
     }
 }
 
