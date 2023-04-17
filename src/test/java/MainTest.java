@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 public class MainTest {
     private Main main;
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
+    HashMap<String, String> newJawn = new HashMap<>();
     @Before
     public void setUp(){
         this.main = new Main();
@@ -26,7 +27,6 @@ public class MainTest {
     @Test
     public void testNameWithConvertArrayToHashMap(){
         String toBeConverted = "NAMe:BrEAD;price:1.23;type:Food;expiration:1/25/2016";
-        HashMap<String, String> newJawn = new HashMap<>();
         newJawn = main.convertArrayToHashMap(toBeConverted);
         String expected = "BrEAD";
         String actual = newJawn.get("NAMe");
@@ -36,7 +36,6 @@ public class MainTest {
     @Test
     public void testPriceWithConvertArrayToHashMap(){
         String toBeConverted = "NAMe:BrEAD;price:1.23;type:Food;expiration:1/25/2016";
-        HashMap<String, String> newJawn = new HashMap<>();
         newJawn = main.convertArrayToHashMap(toBeConverted);
         String expected = "1.23";
         String actual = newJawn.get("price");
@@ -46,7 +45,6 @@ public class MainTest {
     @Test
     public void testTypeWithConvertArrayToHashMap(){
         String toBeConverted = "NAMe:BrEAD;price:1.23;type:Food;expiration:1/25/2016";
-        HashMap<String, String> newJawn = new HashMap<>();
         newJawn = main.convertArrayToHashMap(toBeConverted);
         String expected = "Food";
         String actual = newJawn.get("type");
@@ -56,7 +54,6 @@ public class MainTest {
     @Test
     public void testExpirationWithConvertArrayToHashMap(){
         String toBeConverted = "NAMe:BrEAD;price:1.23;type:Food;expiration:1/25/2016";
-        HashMap<String, String> newJawn = new HashMap<>();
         newJawn = main.convertArrayToHashMap(toBeConverted);
         String expected = "1/25/2016";
         String actual = newJawn.get("expiration");

@@ -13,7 +13,7 @@ public class Main {
         String output = (new Main()).readRawDataToString();
         String[] keyValueArray = convertJerkSONToArray(output);
         addDataToArrayList(keyValueArray);
-        
+
         System.out.println(parsedData);
     }
 
