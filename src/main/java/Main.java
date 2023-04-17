@@ -1,5 +1,7 @@
 import org.apache.commons.io.IOUtils;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -8,16 +10,27 @@ import java.util.stream.Collectors;
 
 public class Main {
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
-    public static void main(String[] args) throws Exception{
-        String output = (new Main()).readRawDataToString();
-        String[] keyValueArray = convertJerkSONToArray(output);
-        addDataToArrayList(keyValueArray);
+    public static void main(String[] args) throws Exception {
+        addDataToArrayList(convertJerkSONToArray((new Main()).readRawDataToString()));
 
         HashMap<String, Integer> applePrices = countUniqueValues(getPrices(parsedData, "apples"));
         HashMap<String, Integer> breadPrices = countUniqueValues(getPrices(parsedData, "bread"));
         HashMap<String, Integer> milkPrices = countUniqueValues(getPrices(parsedData, "milk"));
         HashMap<String, Integer> cookiesPrices = countUniqueValues(getPrices(parsedData, "cookies"));
-        System.out.println(applePrices);
+
+        writeToFile(formatPriceData(applePrices, breadPrices, milkPrices, cookiesPrices));
+    }
+
+    public static void writeToFile(String s){
+        try {
+            FileWriter writer = new FileWriter("./target/classes/outputFormat.txt");
+            writer.write(s);
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     public static ArrayList<String> getPrices(ArrayList<HashMap<String, String>> list, String key){
@@ -41,14 +54,13 @@ public class Main {
     public static String[] convertJerkSONToArray(String s){
         Pattern pattern = Pattern.compile("\\w+:[^#]+");
         Matcher matcher = pattern.matcher(s);
-
-        String[] individualJawns = new String[0];
+        String[] arr = new String[0];
 
         while(matcher.find()) {
-            individualJawns = Arrays.copyOf(individualJawns, individualJawns.length + 1);
-            individualJawns[individualJawns.length - 1] = matcher.group();
+            arr = Arrays.copyOf(arr, arr.length + 1);
+            arr[arr.length - 1] = matcher.group();
         }
-        return individualJawns;
+        return arr;
     }
     public static HashMap<String, String> convertArrayToHashMap(String input) {
         HashMap<String, String> map = new HashMap<>();
@@ -61,6 +73,7 @@ public class Main {
         }
         return map;
     }
+
     public static String getHashMapKey(HashMap<String, String> map, String key){
         return map.entrySet().stream()
                 .filter(entry -> entry.getKey().equalsIgnoreCase(key))
@@ -79,6 +92,51 @@ public class Main {
         return list.stream()
                 .collect(Collectors.toMap(Function.identity(), s -> 1, Integer::sum, HashMap::new));
     }
-}
 
-//naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##
+    public static String formatPriceData(HashMap<String, Integer> applePrices, HashMap<String, Integer> breadPrices,
+                                         HashMap<String, Integer> milkPrices, HashMap<String, Integer> cookiesPrices) {
+        StringBuilder sb = new StringBuilder();
+
+        // Format apple prices
+        sb.append("name:  Apples       seen: " + applePrices.values().stream().mapToInt(Integer::intValue).sum() + " times\n");
+        sb.append("=============       =============\n");
+
+        applePrices.forEach((key, value) -> {
+            sb.append("Price:   " + key + "       seen: " + value + " times\n");
+            sb.append("-------------       -------------\n");
+        });
+
+        // Format bread prices
+        sb.append("name:   Bread       seen: " + breadPrices.values().stream().mapToInt(Integer::intValue).sum() + " times\n");
+        sb.append("=============       =============\n");
+
+        breadPrices.forEach((key, value) -> {
+            sb.append("Price:   " + key + "       seen: " + value + " times\n");
+            sb.append("-------------       -------------\n");
+        });
+
+        // Format milk prices
+        sb.append("name:    Milk       seen: " + milkPrices.values().stream().mapToInt(Integer::intValue).sum() + " times\n");
+        sb.append("=============       =============\n");
+
+        milkPrices.forEach((key, value) -> {
+            sb.append("Price:   " + key + "       seen: " + value + " times\n");
+            sb.append("-------------       -------------\n");
+        });
+
+        // Format cookie prices
+        sb.append("name: Cookies       seen: " + cookiesPrices.values().stream().mapToInt(Integer::intValue).sum() + " times\n");
+        sb.append("=============       =============\n");
+
+        cookiesPrices.forEach((key, value) -> {
+            sb.append("Price:   " + key + "       seen: " + value + " times\n");
+            sb.append("-------------       -------------\n");
+        });
+
+        // Add errors count
+        int errorCount = countUniqueValues(getPrices(parsedData, "errors")).size();
+        sb.append("Errors              seen: " + errorCount + " times\n");
+
+        return sb.toString();
+    }
+}

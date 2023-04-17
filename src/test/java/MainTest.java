@@ -97,6 +97,5 @@ public class MainTest {
         Integer actual = main.countUniqueValues(prices).get("2.00");
 
         Assert.assertEquals(expected, actual);
-
     }
 }
