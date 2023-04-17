@@ -10,6 +10,7 @@ public class MainTest {
     private Main main;
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
     HashMap<String, String> newJawn = new HashMap<>();
+    ArrayList<String> prices = new ArrayList<>();
     @Before
     public void setUp(){
         this.main = new Main();
@@ -84,6 +85,17 @@ public class MainTest {
 
         String expected = "1.24";
         String actual = main.getPrices(parsedData, "bread").get(0);
+        Assert.assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testCountUniqueValues() {
+        prices.add("2.00");
+
+        Integer expected = 1;
+        Integer actual = main.countUniqueValues(prices).get("2.00");
+
         Assert.assertEquals(expected, actual);
 
     }

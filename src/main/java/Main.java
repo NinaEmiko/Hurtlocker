@@ -1,11 +1,10 @@
 import org.apache.commons.io.IOUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Main {
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
@@ -14,11 +13,10 @@ public class Main {
         String[] keyValueArray = convertJerkSONToArray(output);
         addDataToArrayList(keyValueArray);
 
-        System.out.println(parsedData);
-        ArrayList<String> applePrices = getPrices(parsedData, "apples");
-        ArrayList<String> breadPrices = getPrices(parsedData, "bread");
-        ArrayList<String> milkPrices = getPrices(parsedData, "milk");
-        ArrayList<String> cookiesPrices = getPrices(parsedData, "cookies");
+        HashMap<String, Integer> applePrices = countUniqueValues(getPrices(parsedData, "apples"));
+        HashMap<String, Integer> breadPrices = countUniqueValues(getPrices(parsedData, "bread"));
+        HashMap<String, Integer> milkPrices = countUniqueValues(getPrices(parsedData, "milk"));
+        HashMap<String, Integer> cookiesPrices = countUniqueValues(getPrices(parsedData, "cookies"));
         System.out.println(applePrices);
     }
 
@@ -76,6 +74,10 @@ public class Main {
                 .findFirst()
                 .map(Map.Entry::getValue)
                 .orElse("");
+    }
+    public static HashMap<String, Integer> countUniqueValues(ArrayList<String> list) {
+        return list.stream()
+                .collect(Collectors.toMap(Function.identity(), s -> 1, Integer::sum, HashMap::new));
     }
 }
 
