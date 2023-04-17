@@ -60,6 +60,13 @@ public class Main {
                 .map(Map.Entry::getValue)
                 .orElse(null);
     }
+    public static String getHashMapPrice(HashMap<String, String> map){
+        return map.entrySet().stream()
+                .filter(entry -> entry.getKey().equalsIgnoreCase("price"))
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .orElse(null);
+    }
 }
 
 //naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##
