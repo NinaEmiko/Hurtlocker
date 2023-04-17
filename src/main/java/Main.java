@@ -9,13 +9,15 @@ import java.util.regex.Pattern;
 
 public class Main {
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
+
     public static void main(String[] args) throws Exception{
         String output = (new Main()).readRawDataToString();
         String[] keyValueArray = convertJerkSONToArray(output);
         addDataToArrayList(keyValueArray);
 
         System.out.println(parsedData);
-        System.out.println(getHashMapKey(parsedData.get(0), "bread"));
+        System.out.println(getHashMapKey(parsedData.get(0), "NAME"));
+        System.out.println(getHashMapValue(parsedData.get(0), "name"));
     }
 
     public static void addDataToArrayList(String[] arr){
@@ -57,13 +59,13 @@ public class Main {
         return map.entrySet().stream()
                 .filter(entry -> entry.getKey().equalsIgnoreCase(key))
                 .findFirst()
-                .map(Map.Entry::getValue)
+                .map(Map.Entry::getKey)
                 .orElse(null);
     }
 
-    public static String getHashMapValue(HashMap<String, String> map, String value){
+    public static String getHashMapValue(HashMap<String, String> map, String key){
         return map.entrySet().stream()
-                .filter(entry -> entry.getValue().equalsIgnoreCase(value))
+                .filter(entry -> entry.getKey().equalsIgnoreCase(key))
                 .findFirst()
                 .map(Map.Entry::getValue)
                 .orElse(null);
