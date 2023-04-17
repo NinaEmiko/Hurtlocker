@@ -75,4 +75,16 @@ public class MainTest {
         String actual = main.getHashMapValue(newJawn, "3.14");
         Assert.assertEquals(expected, actual);
     }
+
+    @Test
+    public void testGetPrices() {
+        newJawn.put("name", "bread");
+        newJawn.put("price", "1.24");
+        parsedData.add(newJawn);
+
+        String expected = "1.24";
+        String actual = main.getPrices(parsedData, "bread").get(0);
+        Assert.assertEquals(expected, actual);
+
+    }
 }

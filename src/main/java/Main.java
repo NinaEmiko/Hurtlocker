@@ -9,28 +9,36 @@ import java.util.regex.Pattern;
 
 public class Main {
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
-
     public static void main(String[] args) throws Exception{
         String output = (new Main()).readRawDataToString();
         String[] keyValueArray = convertJerkSONToArray(output);
         addDataToArrayList(keyValueArray);
 
         System.out.println(parsedData);
-        System.out.println(getHashMapKey(parsedData.get(0), "NAME"));
-        System.out.println(getHashMapValue(parsedData.get(0), "name"));
+        ArrayList<String> applePrices = getPrices(parsedData, "apples");
+        ArrayList<String> breadPrices = getPrices(parsedData, "bread");
+        ArrayList<String> milkPrices = getPrices(parsedData, "milk");
+        ArrayList<String> cookiesPrices = getPrices(parsedData, "cookies");
     }
 
+    public static ArrayList<String> getPrices(ArrayList<HashMap<String, String>> list, String key){
+        ArrayList<String> price = new ArrayList<>();
+        for (HashMap<String, String> hm : list) {
+            if(getHashMapValue(hm, "name").equalsIgnoreCase(key)){
+                price.add(getHashMapValue(hm, "price"));
+            }
+        }
+        return price;
+    }
     public static void addDataToArrayList(String[] arr){
         for (String s: arr) {
             parsedData.add(convertArrayToHashMap(s));
         }
     }
-
     public String readRawDataToString() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
         return IOUtils.toString(classLoader.getResourceAsStream("RawData.txt"));
     }
-
     public static String[] convertJerkSONToArray(String s){
         Pattern pattern = Pattern.compile("\\w+:[^#]+");
         Matcher matcher = pattern.matcher(s);
@@ -54,7 +62,6 @@ public class Main {
         }
         return map;
     }
-
     public static String getHashMapKey(HashMap<String, String> map, String key){
         return map.entrySet().stream()
                 .filter(entry -> entry.getKey().equalsIgnoreCase(key))
@@ -62,7 +69,6 @@ public class Main {
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
-
     public static String getHashMapValue(HashMap<String, String> map, String key){
         return map.entrySet().stream()
                 .filter(entry -> entry.getKey().equalsIgnoreCase(key))
