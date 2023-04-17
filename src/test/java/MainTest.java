@@ -59,4 +59,15 @@ public class MainTest {
         String actual = newJawn.get("expiration");
         Assert.assertEquals(expected, actual);
     }
+
+    @Test
+    public void testGetHashMapName() {
+        newJawn.put("NaMe", "bReaD");
+        String expected = "bReaD";
+        String actual = main.getHashMapName(newJawn);
+        Assert.assertEquals(expected, actual);
+
+
+
+    }
 }

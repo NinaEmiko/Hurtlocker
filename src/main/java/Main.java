@@ -15,6 +15,7 @@ public class Main {
         addDataToArrayList(keyValueArray);
 
         System.out.println(parsedData);
+        System.out.println(getHashMapName(parsedData.get(0)));
     }
 
     public static void addDataToArrayList(String[] arr){
@@ -52,12 +53,13 @@ public class Main {
         return map;
     }
 
-    //toLowerCase
-    //if thisString.get(4) starts with c
-    //if starts with a
-    //if starts with m
-    //if starts with b
-    //if "" increment error's seen value
+    public static String getHashMapName(HashMap<String, String> map){
+        return map.entrySet().stream()
+                .filter(entry -> entry.getKey().equalsIgnoreCase("name"))
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .orElse(null);
+    }
 }
 
 //naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##
