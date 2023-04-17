@@ -1,27 +1,31 @@
 import org.apache.commons.io.IOUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
+    private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
+    public static void main(String[] args) throws Exception{
+        String output = (new Main()).readRawDataToString();
+        String[] keyValueArray = convertJerkSONToArray(output);
+        addDataToArrayList(keyValueArray);
+        
+        System.out.println(parsedData);
+    }
+
+    public static void addDataToArrayList(String[] arr){
+        for (String s: arr) {
+            parsedData.add(convertArrayToHashMap(s));
+        }
+    }
 
     public String readRawDataToString() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
         return IOUtils.toString(classLoader.getResourceAsStream("RawData.txt"));
-    }
-
-    public static void main(String[] args) throws Exception{
-        String output = (new Main()).readRawDataToString();
-        String[] keyValueArray = convertJerkSONToArray(output);
-        printArray(keyValueArray);
-    }
-
-    public static void printArray(String[] arr) {
-        for (String s: arr) {
-            System.out.println(s);
-        }
     }
 
     public static String[] convertJerkSONToArray(String s){
@@ -35,6 +39,17 @@ public class Main {
             individualJawns[individualJawns.length - 1] = matcher.group();
         }
         return individualJawns;
+    }
+    public static HashMap<String, String> convertArrayToHashMap(String input) {
+        HashMap<String, String> map = new HashMap<>();
+        Pattern pattern = Pattern.compile("([a-zA-Z]+):([^;!@%^*]+)");
+        Matcher matcher = pattern.matcher(input);
+        while(matcher.find()){
+            String key = matcher.group(1);
+            String value = matcher.group(2);
+            map.put(key, value);
+        }
+        return map;
     }
 
     //toLowerCase
