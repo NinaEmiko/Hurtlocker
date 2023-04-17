@@ -15,7 +15,7 @@ public class Main {
         addDataToArrayList(keyValueArray);
 
         System.out.println(parsedData);
-        System.out.println(getHashMapName(parsedData.get(0)));
+        System.out.println(getHashMapKey(parsedData.get(0), "bread"));
     }
 
     public static void addDataToArrayList(String[] arr){
@@ -53,16 +53,17 @@ public class Main {
         return map;
     }
 
-    public static String getHashMapName(HashMap<String, String> map){
+    public static String getHashMapKey(HashMap<String, String> map, String key){
         return map.entrySet().stream()
-                .filter(entry -> entry.getKey().equalsIgnoreCase("name"))
+                .filter(entry -> entry.getKey().equalsIgnoreCase(key))
                 .findFirst()
                 .map(Map.Entry::getValue)
                 .orElse(null);
     }
-    public static String getHashMapPrice(HashMap<String, String> map){
+
+    public static String getHashMapValue(HashMap<String, String> map, String value){
         return map.entrySet().stream()
-                .filter(entry -> entry.getKey().equalsIgnoreCase("price"))
+                .filter(entry -> entry.getValue().equalsIgnoreCase(value))
                 .findFirst()
                 .map(Map.Entry::getValue)
                 .orElse(null);

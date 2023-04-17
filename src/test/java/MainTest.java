@@ -64,7 +64,7 @@ public class MainTest {
     public void testGetHashMapName() {
         newJawn.put("NaMe", "bReaD");
         String expected = "bReaD";
-        String actual = main.getHashMapName(newJawn);
+        String actual = main.getHashMapKey(newJawn, "name");
         Assert.assertEquals(expected, actual);
     }
 
@@ -72,7 +72,7 @@ public class MainTest {
     public void testGetHashMapPrice() {
         newJawn.put("pRICe", "3.14");
         String expected = "3.14";
-        String actual = main.getHashMapPrice(newJawn);
+        String actual = main.getHashMapValue(newJawn, "3.14");
         Assert.assertEquals(expected, actual);
     }
 }
