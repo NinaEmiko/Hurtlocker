@@ -105,7 +105,7 @@ public class MainTest {
         prices.add("");
 
         Integer expected = 1;
-        Integer actual = main.catchErrors(prices);
+        Integer actual = main.catchErrors(parsedData);
 
         Assert.assertEquals(expected, actual);
     }

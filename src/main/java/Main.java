@@ -137,18 +137,25 @@ public class Main {
 
         // Add errors count
         int errorCount = countUniqueValues(getPrices(parsedData, "errors")).size();
-        sb.append("Errors              seen: " + errorCount + " times\n");
+        sb.append("Errors              seen: " +
+                catchErrors(parsedData)   +
+                " times\n");
 
         return sb.toString();
     }
 
-    public static int catchErrors(ArrayList<String> prices) {
-        int errors = 0;
-        for (String price : prices) {
-            if (price.isEmpty()) {
-                errors++;
+    public static int catchErrors(ArrayList<HashMap<String, String>> items) {
+        int totalCount = 0;
+        for (HashMap<String, String> item : items) {
+            int errorCount = 0;
+            for (Map.Entry<String, String> entry : item.entrySet()) {
+                String price = entry.getValue();
+                if (price.isEmpty()) {
+                    errorCount++;
+                }
             }
+            totalCount += errorCount;
         }
-        return errors;
+        return totalCount;
     }
 }
