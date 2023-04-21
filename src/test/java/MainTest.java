@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
+
 public class MainTest {
     private Main main;
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
@@ -95,6 +96,16 @@ public class MainTest {
 
         Integer expected = 1;
         Integer actual = main.countUniqueValues(prices).get("2.00");
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCatchBlankPriceErrors() {
+        prices.add("");
+
+        Integer expected = 1;
+        Integer actual = main.catchErrors(prices);
 
         Assert.assertEquals(expected, actual);
     }

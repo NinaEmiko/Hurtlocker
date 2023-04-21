@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Main {
+    
     private static ArrayList<HashMap<String, String>> parsedData = new ArrayList<>();
+
     public static void main(String[] args) throws Exception {
         addDataToArrayList(convertJerkSONToArray((new Main()).readRawDataToString()));
 
@@ -138,5 +140,15 @@ public class Main {
         sb.append("Errors              seen: " + errorCount + " times\n");
 
         return sb.toString();
+    }
+
+    public static int catchErrors(ArrayList<String> prices) {
+        int errors = 0;
+        for (String price : prices) {
+            if (price.isEmpty()) {
+                errors++;
+            }
+        }
+        return errors;
     }
 }
